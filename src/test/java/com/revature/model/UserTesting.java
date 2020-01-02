@@ -34,6 +34,13 @@ public class UserTesting {
     assertTrue(userMatch.equals(user));
   }
   
+  @Test
+  public void testGet() {
+    
+    user = userDao.get(31);
+    assertTrue(user.equals(userMatch));
+  }
+  
   
   @Test
   public void testEquals() {

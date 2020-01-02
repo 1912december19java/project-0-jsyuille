@@ -46,8 +46,8 @@ public class UserUI extends User {
             System.exit(0);
             break;
           default:
-            System.out.println("Invalid input, please try again");
-            return;
+            System.out.println("Invalid input, please try again\n");
+            break;
         }
 
         while (UserUI.loggedIn == true) {

@@ -35,9 +35,9 @@ public class User {
     String passIn = scan.nextLine();
 
     UserDao userDao = new UserDaoPostgres();
-    log.trace("Passing in name and password for validation");
+      log.trace("Passing in name and password for validation");
     user = userDao.validateLogin(user, nameIn, passIn);
-    log.trace("Login successful, returning to menu");
+      log.trace("Login successful, returning to menu");
     return user;
   }
 
@@ -54,7 +54,7 @@ public class User {
     userDao.validateLogin(user, user.getUser_name(), user.getUser_password());
     if (UserUI.loggedIn == true) {
       UserUI.loggedIn = false;
-      throw new AccountAlreadyExistsException("This account already exists!\n");
+      throw new AccountAlreadyExistsException("This account already exists!\n\n");
     } else {
       userDao.save(user);
     }

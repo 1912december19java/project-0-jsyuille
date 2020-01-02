@@ -12,6 +12,7 @@ public class UserDaoPostgres implements UserDao {
 
   private static Logger log = Logger.getLogger(UserDaoPostgres.class); // Named with whatever class
                                                                        // you're currently in
+  
 
   protected static Connection conn;
 
@@ -57,6 +58,7 @@ public class UserDaoPostgres implements UserDao {
   @Override
   public void save(User user) {
     PreparedStatement stmt = null;
+    
     try {
       stmt = conn.prepareStatement(
           "INSERT INTO user_table(user_name, user_password, account_balance) VALUES (?,?,?)");
@@ -78,6 +80,7 @@ public class UserDaoPostgres implements UserDao {
   @Override
   public void update(User user) {
     PreparedStatement stmt = null;
+    
     try {
       stmt = conn.prepareStatement(
           "UPDATE user_table SET user_name = ?, user_password = ?, account_balance = ? WHERE id = ?");
@@ -92,29 +95,6 @@ public class UserDaoPostgres implements UserDao {
     }
   }
 
-
-  @Override
-  public List<User> getAll() {
-    List<User> all = new ArrayList<User>();
-    PreparedStatement stmt = null;
-    ResultSet rs = null;
-
-    try {
-      stmt = conn.prepareStatement("SELECT * FROM user_table ORDER BY id");
-      if (stmt.execute()) {
-        rs = stmt.getResultSet();
-      }
-      while (rs.next()) {
-        all.add(new User(rs.getInt("id"), rs.getString("user_name"), rs.getString("user_password"),
-            rs.getDouble("account_balance")));
-      }
-
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return all;
-  }
 
   @Override
   public User validateLogin(User user, String userLogin, String userPassword) {
