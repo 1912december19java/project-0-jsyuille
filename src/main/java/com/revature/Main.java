@@ -1,6 +1,8 @@
 package com.revature;
+import java.util.Scanner;
 import com.revature.controller.*;
-import com.revature.service.*;
+import com.revature.repository.*;
+import com.revature.model.*;
 
 
 /** 
@@ -12,9 +14,8 @@ import com.revature.service.*;
 public class Main {
 
 	public static void main(String[] args) {
-		UserUI guest = new UserUI();
-		guest.display();
+		User guest = new User();
+		UserUI.display(guest);
 	}
 	
-	//Will it commit now?
 }
