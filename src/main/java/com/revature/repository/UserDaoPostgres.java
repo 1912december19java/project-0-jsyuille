@@ -12,8 +12,8 @@ public class UserDaoPostgres implements UserDao {
 
   private static Logger log = Logger.getLogger(UserDaoPostgres.class); // Named with whatever class
                                                                        // you're currently in
-  
 
+  
   protected static Connection conn;
 
   static {
@@ -21,7 +21,7 @@ public class UserDaoPostgres implements UserDao {
 
       conn = DriverManager.getConnection(System.getenv("connstring"), System.getenv("username"),
           System.getenv("password"));
-      // log.info("Connected to database");
+       log.info("Connected to database");
     } catch (SQLException e) {
       log.error("Failed to connect to database", e);
     }
@@ -101,7 +101,8 @@ public class UserDaoPostgres implements UserDao {
 
     PreparedStatement stmt = null;
     ResultSet rs = null;
-    log.trace("Connecting to database");
+    
+    log.trace("Connecting to database, validating login info");
     try {
       stmt = conn
           .prepareStatement("SELECT * FROM user_table WHERE user_name = ? AND user_password = ?");
@@ -124,12 +125,13 @@ public class UserDaoPostgres implements UserDao {
           user.setAccount_balance(rs.getDouble("account_balance"));
 
           UserUI.loggedIn = true;
+
           break;
         }
       }
 
-      if (UserUI.loggedIn == false) {
-        log.trace("Username and password combination did not match any results from the database");
+      if (UserUI.loggedIn == false && User.isRegistered() == false) {
+        log.warn("Username and password combination did not match any results from the database");
         System.out.println("Incorrect username or password");
       }
 

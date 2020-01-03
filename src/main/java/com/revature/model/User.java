@@ -16,6 +16,7 @@ public class User {
   private String user_name;
   private String user_password;
   private Double account_balance;
+  private static Boolean registered = false;
 
   public User() {};
 
@@ -35,9 +36,9 @@ public class User {
     String passIn = scan.nextLine();
 
     UserDao userDao = new UserDaoPostgres();
-      log.trace("Passing in name and password for validation");
+    log.trace("Passing in name and password for validation");
     user = userDao.validateLogin(user, nameIn, passIn);
-      log.trace("Login successful, returning to menu");
+    log.trace("Login successful, returning to menu");
     return user;
   }
 
@@ -51,13 +52,17 @@ public class User {
     user.setUser_password(scn.nextLine());
     user.setAccount_balance(0.00);
 
+    User.setRegistered(true);
     userDao.validateLogin(user, user.getUser_name(), user.getUser_password());
+    
     if (UserUI.loggedIn == true) {
       UserUI.loggedIn = false;
       throw new AccountAlreadyExistsException("This account already exists!\n\n");
     } else {
       userDao.save(user);
     }
+    
+    User.setRegistered(false);
   }
 
   public void deposit() throws NegativeTransactionException {
@@ -128,6 +133,14 @@ public class User {
     this.account_balance = account_balance;
   }
 
+  public static Boolean isRegistered() {
+    return registered;
+  }
+
+  public static void setRegistered(Boolean r) {
+    registered = r;
+  }
+
   @Override
   public String toString() {
     return "User [id=" + id + ", user_name=" + user_name + ", user_password=" + user_password
@@ -146,4 +159,6 @@ public class User {
       return false;
 
   }
+
+
 }
